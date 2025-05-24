@@ -51,6 +51,33 @@
     </form>
 </div>
 
+<script>
+    function findCardRequests() {
+        const oib = document.getElementById("oib").value;
+        fetch(`/api/v1/client-cards/${oib}`)
+            .then(response => {
+                if (!response.ok) throw new Error("Not found");
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById("resultsBody");
+                tbody.innerHTML = ""; // Clear old results
+                data.forEach(card => {
+                    const row = `<tr>
+                        <td>${card.firstName}</td>
+                        <td>${card.lastName}</td>
+                        <td>${card.status}</td>
+                        <td>${card.oib}</td>
+                    </tr>`;
+                    tbody.insertAdjacentHTML('beforeend', row);
+                });
+            })
+            .catch(err => {
+                alert("No card requests found for given OIB.");
+            });
+    }
 
+    
+</script>
 </body>
 </html>
