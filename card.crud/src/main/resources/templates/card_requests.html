@@ -77,7 +77,41 @@
             });
     }
 
-    
+    function deleteCardRequests() {
+        const oib = document.getElementById("oib").value;
+        fetch(`/api/v1/client-cards/${oib}`, { method: "DELETE" })
+            .then(response => {
+                if (response.ok) {
+                    alert("Deleted successfully");
+                    document.getElementById("resultsBody").innerHTML = "";
+                } else {
+                    alert("Delete failed or not found");
+                }
+            });
+    }
+
+    function createCardRequest(event) {
+        event.preventDefault();
+
+        const form = document.getElementById("createForm");
+        const formData = new FormData(form);
+
+        const json = {};
+        formData.forEach((v, k) => json[k] = v);
+
+        fetch("/api/v1/card-request", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(json)
+        }).then(response => {
+            if (response.status === 201) {
+                alert("Card request created");
+                form.reset();
+            } else {
+                alert("Failed to create request");
+            }
+        });
+    }
 </script>
 </body>
 </html>

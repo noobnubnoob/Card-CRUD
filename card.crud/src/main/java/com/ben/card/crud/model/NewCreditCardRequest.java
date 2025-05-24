@@ -1,6 +1,8 @@
 package com.ben.card.crud.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name="CREDIT_CARD_REQUEST")
@@ -12,8 +14,11 @@ public class NewCreditCardRequest {
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
+    @Pattern(regexp = "^[a-zA-Z]{1,35}")
     private String lastName;
     @Column(name = "oib")
+    @NotNull
+    @Pattern(regexp = "^[0-9]{3,11}")
     private String oib;
     @Column(name = "status")
     private String status;

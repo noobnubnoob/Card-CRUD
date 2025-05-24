@@ -2,7 +2,6 @@ package com.ben.card.crud.service;
 
 import com.ben.card.crud.model.NewCreditCardRequest;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +14,7 @@ public interface NewCreditCardRequestService {
 
     Optional<NewCreditCardRequest> findByRequestId(int id);
 
-    void createCardRequest(String firstName, String lastName, String oib, String status);
+    NewCreditCardRequest createCardRequest(String firstName, String lastName, String oib, String status);
 
     void deleteByRequestId(int id);
 

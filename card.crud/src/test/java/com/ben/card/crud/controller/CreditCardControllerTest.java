@@ -64,7 +64,6 @@ public class CreditCardControllerTest {
         jdbc.execute(sqlAddCards);
     }
 
-    // get by oib
     @Test
     public void getCreditCardRequestByOibTest() throws Exception {
         // use get request together with oib to fetch card requests for that client
@@ -73,11 +72,9 @@ public class CreditCardControllerTest {
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$", hasSize(2)));
 
-        // check if response is ok
     }
 
 
-    // post - new request
     @Test
     public void createNewCardTest() throws Exception {
         NewCardRequest newCardRequest = new NewCardRequest("Tomo", "Tomic", "approved", "999");
@@ -93,7 +90,6 @@ public class CreditCardControllerTest {
         assertTrue(cardRequestDao.findById(7).isPresent());
     }
 
-    // delete
     @Test
     public void deleteCardRequestByOibTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/client-cards/{oib}", "11112223334"))

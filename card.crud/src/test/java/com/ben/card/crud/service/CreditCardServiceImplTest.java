@@ -1,6 +1,5 @@
 package com.ben.card.crud.service;
 
-import com.ben.card.crud.dto.NewCardRequest;
 import com.ben.card.crud.model.NewCreditCardRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +37,6 @@ public class CreditCardServiceImplTest {
         jdbc.execute(sqlAddCards);
     }
 
-    // tests to do
 
     @Test
     public void createCardRequestTes() {
@@ -56,7 +54,6 @@ public class CreditCardServiceImplTest {
         assertEquals("pending", newCard.get().getStatus());
     }
 
-    // searching database - return nothing if not found
     @Test
     public void findAllRequestsTest() {
         List<NewCreditCardRequest> allRequests = newCreditCardRequestService.findAll();
@@ -100,7 +97,6 @@ public class CreditCardServiceImplTest {
         assertEquals("11112223334", benjamin.get().getOib());
     }
 
-    // deleting a client + delete by oib
     @Test
     public void deleteCardRequestTest() {
         newCreditCardRequestService.deleteByRequestId(2);

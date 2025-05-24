@@ -30,8 +30,21 @@ public class NewCreditCardRequestController {
     }
 
     @RequestMapping(value = "/client-cards/{oib}", method = RequestMethod.DELETE)
-    public void deleteCardRequestByOib(@PathVariable String oib) {
+    public ResponseEntity<Void> deleteCardRequestByOib(@PathVariable String oib) {
+        List<NewCreditCardRequest> cardRequestsToDelete = cardRequestService.findByOib(oib);
+
+        if (cardRequestsToDelete.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
         cardRequestService.deleteByOib(oib);
+        cardRequestsToDelete = cardRequestService.findByOib(oib);
+
+        if (cardRequestsToDelete.isEmpty()) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @RequestMapping(value = "/card-request", method = RequestMethod.POST)
