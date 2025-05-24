@@ -1,5 +1,6 @@
 package com.ben.card.crud.controller;
 
+import com.ben.card.crud.dto.NewCardRequest;
 import com.ben.card.crud.model.NewCreditCardRequest;
 import com.ben.card.crud.repository.NewCreditCardRequestDao;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -22,6 +24,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @TestPropertySource("/application-test.properties")
@@ -32,6 +35,8 @@ public class CreditCardControllerTest {
 
     @Autowired
     private JdbcTemplate jdbc;
+
+    private static MockHttpServletRequest request;
 
     @Value("${sql.script.create.newcreditcard.request}")
     private String sqlAddCards;
@@ -54,7 +59,6 @@ public class CreditCardControllerTest {
 
     public static final MediaType APPLICATION_JSON_UTF8 = MediaType.APPLICATION_JSON;
 
-
     @BeforeEach
     public void initializeDatabase() {
         jdbc.execute(sqlAddCards);
@@ -73,8 +77,21 @@ public class CreditCardControllerTest {
     }
 
 
-
     // post - new request
+    @Test
+    public void createNewCardTest() throws Exception {
+        NewCardRequest newCardRequest = new NewCardRequest("Tomo", "Tomic", "approved", "999");
+
+        mockMvc.perform(post("/api/v1//card-request")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(newCardRequest)))
+                .andExpect(status().isCreated());
+
+        List<NewCreditCardRequest> tomo = cardRequestDao.findByOib("999");
+        assertEquals(1, tomo.size());
+
+        assertTrue(cardRequestDao.findById(7).isPresent());
+    }
 
     // delete
     @Test
