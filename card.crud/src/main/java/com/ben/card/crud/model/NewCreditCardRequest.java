@@ -18,6 +18,16 @@ public class NewCreditCardRequest {
     @Column(name = "status")
     private String status;
 
+    public NewCreditCardRequest(String firstName, String lastName, String oib, String status) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.oib = oib;
+        this.status = status;
+    }
+
+    public NewCreditCardRequest() {
+    }
+
     public Integer getRequestId() {
         return requestId;
     }

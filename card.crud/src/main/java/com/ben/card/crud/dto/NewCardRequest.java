@@ -2,6 +2,17 @@ package com.ben.card.crud.dto;
 
 public class NewCardRequest {
     private String firstName;
+
+    public NewCardRequest(String firstName, String lastName, String status, String oib) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.status = status;
+        this.oib = oib;
+    }
+
+    public NewCardRequest() {
+    }
+
     private String lastName;
     private String status;
     private String oib;
