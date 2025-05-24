@@ -29,8 +29,8 @@ public class NewCreditCardRequestServiceImpl implements NewCreditCardRequestServ
     }
 
     @Override
-    public Optional<NewCreditCardRequest> findByRequestId(int i) {
-        return newCreditCardRequestDao.findById(i);
+    public Optional<NewCreditCardRequest> findByRequestId(int id) {
+        return newCreditCardRequestDao.findById(id);
     }
 
     @Override
@@ -38,5 +38,15 @@ public class NewCreditCardRequestServiceImpl implements NewCreditCardRequestServ
         NewCreditCardRequest cardRequest = new NewCreditCardRequest(firstName, lastName, oib, status);
 
         newCreditCardRequestDao.save(cardRequest);
+    }
+
+    @Override
+    public void deleteByRequestId(int id) {
+        newCreditCardRequestDao.deleteById(id);
+    }
+
+    @Override
+    public void deleteByOib(String oib) {
+        newCreditCardRequestDao.deleteByOib(oib);
     }
 }

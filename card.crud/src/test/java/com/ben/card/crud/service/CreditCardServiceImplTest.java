@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -40,9 +41,8 @@ public class CreditCardServiceImplTest {
 
     // tests to do
 
-    // insert in database
     @Test
-    public void createCardRequest() {
+    public void createCardRequestTes() {
         // insert in database
         newCreditCardRequestService.createCardRequest("Petar", "Peric", "555", "pending");
         // check if it actually is in databse afterwards
@@ -59,14 +59,14 @@ public class CreditCardServiceImplTest {
 
     // searching database - return nothing if not found
     @Test
-    public void findAllRequests() {
+    public void findAllRequestsTest() {
         List<NewCreditCardRequest> allRequests = newCreditCardRequestService.findAll();
 
         assertEquals(6, allRequests.size());
     }
 
     @Test
-    public void findRequestByOib() {
+    public void findRequestByOibTest() {
         List<NewCreditCardRequest> benjamin = newCreditCardRequestService.findByOib("11112223334");
         assertEquals(2, benjamin.size());
 
@@ -90,7 +90,7 @@ public class CreditCardServiceImplTest {
     }
 
     @Test
-    public void findByRequestId() {
+    public void findByRequestIdTest() {
         Optional<NewCreditCardRequest> benjamin = newCreditCardRequestService.findByRequestId(1);
 
         assertTrue(benjamin.isPresent());
@@ -102,6 +102,31 @@ public class CreditCardServiceImplTest {
     }
 
     // deleting a client + delete by oib
+    @Test
+    public void deleteCardRequestTest() {
+        newCreditCardRequestService.deleteByRequestId(2);
+
+        List<NewCreditCardRequest> allCardRequests = newCreditCardRequestService.findAll();
+        assertNotEquals(6, allCardRequests.size());
+
+        Optional<NewCreditCardRequest> marko = newCreditCardRequestService.findByRequestId(2);
+        assertFalse(marko.isPresent());
+    }
+
+    @Test
+    @Transactional
+    public void deleteCardRequestByIdTest() {
+        newCreditCardRequestService.deleteByOib("11112223334");
+
+        List<NewCreditCardRequest> allCardRequests = newCreditCardRequestService.findAll();
+        assertEquals(4, allCardRequests.size());
+
+        Optional<NewCreditCardRequest> benjamin = newCreditCardRequestService.findByRequestId(1);
+        assertFalse(benjamin.isPresent());
+
+        List<NewCreditCardRequest> benjaminCards = newCreditCardRequestService.findByOib("11112223334");
+        assertEquals(0, benjaminCards.size());
+    }
 
     @AfterEach
     public void restoreDatabase() {

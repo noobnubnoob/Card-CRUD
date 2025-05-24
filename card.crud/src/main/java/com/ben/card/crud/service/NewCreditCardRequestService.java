@@ -13,7 +13,11 @@ public interface NewCreditCardRequestService {
 
     List<NewCreditCardRequest> findByOib(String oib);
 
-    Optional<NewCreditCardRequest> findByRequestId(int i);
+    Optional<NewCreditCardRequest> findByRequestId(int id);
 
     void createCardRequest(String firstName, String lastName, String oib, String status);
+
+    void deleteByRequestId(int id);
+
+    void deleteByOib(String oib);
 }
