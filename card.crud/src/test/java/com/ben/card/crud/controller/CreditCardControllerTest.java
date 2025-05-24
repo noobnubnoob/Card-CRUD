@@ -1,5 +1,6 @@
 package com.ben.card.crud.controller;
 
+import com.ben.card.crud.model.NewCreditCardRequest;
 import com.ben.card.crud.repository.NewCreditCardRequestDao;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -15,6 +16,10 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -72,6 +77,16 @@ public class CreditCardControllerTest {
     // post - new request
 
     // delete
+    @Test
+    public void deleteCardRequestByOibTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/client-cards/{oib}", "11112223334"))
+                .andExpect(status().isOk());
+
+        List<NewCreditCardRequest> benjamin = cardRequestDao.findByOib("11112223334");
+        assertEquals(0, benjamin.size());
+
+        assertFalse(cardRequestDao.findById(1).isPresent());
+    }
 
     @AfterEach
     public void restoreDatabase() {

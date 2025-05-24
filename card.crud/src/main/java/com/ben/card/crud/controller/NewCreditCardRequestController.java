@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @RestController
 @RequestMapping("/api/v1")
 public class NewCreditCardRequestController {
@@ -20,12 +21,17 @@ public class NewCreditCardRequestController {
     NewCreditCardRequestService cardRequestService;
 
     @RequestMapping(value = "/client-cards/{oib}", method = RequestMethod.GET)
-    public List<NewCardRequest> clientCardInformation(@PathVariable String oib) {
+    public List<NewCardRequest> getCreditCardRequestByOib(@PathVariable String oib) {
 
         List<NewCreditCardRequest> creditCardRequests = cardRequestService.findByOib(oib);
         List<NewCardRequest> cardRequests = creditCardRequests.stream().map(
                 x -> new NewCardRequest(x.getFirstName(), x.getLastName(), x.getStatus(), x.getOib())).
                 collect(Collectors.toList());
         return cardRequests;
+    }
+
+    @RequestMapping(value = "client-cards/{oib}", method = RequestMethod.DELETE)
+    public void deleteCardRequestByOib(@PathVariable String oib) {
+        cardRequestService.deleteByOib(oib);
     }
 }
